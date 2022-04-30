@@ -1,0 +1,65 @@
+body{
+    display: flex;
+    justify-content: center;
+    padding-top: 70px;
+}
+
+
+.warning{
+    color: red;
+    font-size: 20px;
+}
+
+a:link{
+    text-decoration: none;
+}
+
+.mainDiv{
+    height: 300px;
+    font-family: Calibri, serif;
+}
+
+.mainDiv > div{
+    margin-top: 10px;
+}
+
+.info > label{
+    color: grey;
+    font-size: 20px;
+}
+
+input{
+    border-radius: 10px;
+    border-color: darkgray;
+    height: 45px;
+    width: 100%;
+    box-sizing: border-box;
+    font-size: 20px;
+}
+
+.buttons{
+    display: flex;
+    flex-flow: row;
+    justify-content: space-between;
+
+}
+
+.buttons button:first-child{
+    background-color: blue;
+    color: white;
+    border-color: blue;
+    border-radius: 10px;
+    height: 45px;
+    padding: 3px 13px 3px 13px;
+    font-size: 15px;
+}
+
+.buttons button:last-child{
+    background-color: white;
+    color: blue;
+    border-color: blue;
+    border-radius: 10px;
+    height: 45px;
+    padding: 3px 13px 3px 13px;
+    font-size: 15px;
+}

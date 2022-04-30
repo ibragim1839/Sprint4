@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link href="styles.css" rel="stylesheet" type="text/css">
+    <title>INFO</title>
+</head>
+<body onload="checking()">
+
+<div class="mainDiv">
+    <div class="info">
+        <p id="userName">NAME: </p>  <p id="userLogin">LOGIN: </p> <p id="userPassword">PASSWORD: </p>
+    </div>
+    <div id="buttons" class="buttons">
+        <button onclick="exit()">EXIT</button>
+        <button onclick="change()">CHANGE INFO</button>
+    </div>
+</div>
+
+
+<script>
+
+    function check(){
+        if (newLogin.value !== "" && newPassword.value !== "" && newName.value !== ""){
+            if (newLogin.value === JSON.parse(localStorage.getItem('currentUser')).login && newPassword.value === JSON.parse(localStorage.getItem('currentUser')).password && newName.value === JSON.parse(localStorage.getItem('currentUser')).name){
+                warning.style.visibility = "visible"
+            }
+            else{
+                renew();
+            }
+        }
+        else{
+            if(newPassword.value === "" ){
+                passwordWarning.style.visibility = "visible"
+            }
+            if(newLogin.value === "" ){
+                loginWarning.style.visibility = "visible"
+            }
+            if(newName.value === "" ){
+                nameWarning.style.visibility = "visible"
+            }
+        }
+
+    }
+
+    function checking(){
+        if(localStorage.getItem('currentUser') === null) {
+            alert("пиздуй отсюдова")
+            window.location.href = "Sprint5.html"
+        }
+        else{
+            let cUser = JSON.parse(localStorage.getItem('currentUser'))
+            userName.innerHTML += cUser.name;
+            userLogin.innerHTML += cUser.login;
+            userPassword.innerHTML += cUser.password;
+        }
+    }
+
+    function exit(){
+        localStorage.removeItem('currentUser')
+        window.location.href = "Sprint5.html"
+    }
+
+    function change(){
+
+        let cUser = JSON.parse(localStorage.getItem('currentUser'))
+
+        userName.innerHTML = '<span>NAME</span> <input type="text" id="newName">'
+        newName.value = cUser.name;
+        newName.after(document.createElement('p'))
+        newName.nextElementSibling.id = "nameWarning"
+        nameWarning.classList.add("warning")
+        nameWarning.innerHTML = "Имя не может быть пустым"
+        nameWarning.style.visibility = "hidden"
+
+        userLogin.innerHTML = '<span>LOGIN</span> <input type="text" id = "newLogin">'
+        newLogin.value = cUser.login;
+        newLogin.after(document.createElement('p'))
+        newLogin.nextElementSibling.id = "loginWarning"
+        loginWarning.classList.add("warning")
+        loginWarning.innerHTML = "Логин не может быть пустым"
+        loginWarning.style.visibility = "hidden"
+
+        userPassword.innerHTML = '<span>PASSWORD</span> <input type="text" id="newPassword">'
+        newPassword.value = cUser.password;
+        newPassword.after(document.createElement('p'))
+        newPassword.nextElementSibling.id = "passwordWarning"
+        passwordWarning.classList.add("warning")
+        passwordWarning.innerHTML = "Логин не может быть пустым"
+        passwordWarning.style.visibility = "hidden"
+
+        let b = document.createElement('button')
+        b.innerHTML = "change"
+        b.id = "changer"
+        b.addEventListener('click',check)
+        buttons.innerHTML = ""
+        buttons.appendChild(b)
+
+        changer.after(document.createElement('button'))
+        changer.nextElementSibling.innerHTML = "cancel"
+        changer.nextElementSibling.id = "canceler"
+        canceler.addEventListener('click', reload)
+
+        buttons.after(document.createElement('div'))
+        buttons.nextElementSibling.id = "warning"
+        warning.classList.add("warning")
+        warning.innerHTML = '<p>Не было внесено никаких изменений</p>'
+        warning.style.visibility = "hidden"
+
+        newLogin.addEventListener('focus',next)
+        newName.addEventListener('focus',next)
+        newPassword.addEventListener('focus',next)
+    }
+
+    function next(){
+        event.target.nextElementSibling.style.visibility = "hidden";
+        warning.style.visibility = "hidden"
+    }
+
+    function renew(){
+        let old = JSON.parse(localStorage.getItem('users'))
+        console.log(old)
+        let y = JSON.parse(localStorage.getItem('currentUser'))
+        console.log(y)
+        let index = 0;
+        for(let i of old){
+            if(i.name === y.name && i.login === y.login && i.password === y.password){
+                break;
+            }
+            index++;
+        }
+        localStorage.setItem('currentUser', JSON.stringify({name: newName.value, login: newLogin.value, password: newPassword.value}))
+        old[index] = {name: newName.value, login: newLogin.value, password: newPassword.value}
+        localStorage.setItem('users', JSON.stringify(old));
+        alert("Данные успешно изменены")
+        reload()
+    }
+
+
+    function reload(){
+        window.location.reload()
+    }
+
+
+
+
+</script>
+
+</body>
+</html>

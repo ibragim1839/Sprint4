@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link href="styles.css" rel="stylesheet" type="text/css">
+    <meta charset="UTF-8">
+    <title>LOGIN</title>
+</head>
+
+<body onload="check()">
+
+    <div class="mainDiv" id="loginContainer">
+        <div class="info" id="loginInfoContainer">
+            <label for>Login</label>
+            <input type="text" id="loginInfo" onfocus="next()">
+            <p id="passwordWarning" class="warning"></p>
+        </div>
+        <div class="info" id="passwordInfoContainer">
+            <label for="passwordInfo">Password</label>
+            <input type="password" id="passwordInfo" onfocus="next()">
+            <p id="loginWarning" class="warning" ></p>
+        </div>
+
+        <div class="buttons" id="buttonsContainer">
+            <button onclick="checking()">Login</button>
+            <button><a href="RegistrationPage.html">Go to register</a></button>
+        </div>
+
+        <div class="warning" id="warningMessage" style="text-align: center; visibility: hidden">
+            <p>There is no such user</p>
+        </div>
+    </div>
+
+    <script>
+
+        function isThere(){
+            console.log("sex")
+            let isIn = false;
+            let cUsers = JSON.parse(localStorage.getItem('users'))
+            let userLogin = loginInfo.value;
+            let userPassword = passwordInfo.value;
+            for(let u of cUsers){
+                if(u.login === userLogin && u.password === userPassword){
+                    isIn = true;
+                    alert("Вы успешно вошли в свой аккаунт")
+                    localStorage.setItem('currentUser', JSON.stringify(u))
+                    window.location.href = 'info.html'
+                }
+            }
+            if(!isIn === true){
+                warningMessage.style.visibility = "visible"
+            }
+        }
+
+        function next(){
+            event.target.nextElementSibling.innerHTML = "";
+            warningMessage.style.visibility = "hidden"
+        }
+
+        function checking(){
+            if (loginInfo.value !== "" && passwordInfo.value !== ""){
+                isThere();
+            }
+            else{
+                if(passwordInfo.value === "" ){
+                    passwordWarning.innerHTML = "Please enter your password"
+                }
+                if(loginInfo.value === "" ){
+                    loginWarning.innerHTML = "Please enter your login"
+                }
+            }
+        }
+
+        function check(){
+            if (localStorage.getItem('currentUser')!=null){
+                window.location.href = "info.html"
+            }
+        }
+
+    </script>
+
+
+</body>
+</html>

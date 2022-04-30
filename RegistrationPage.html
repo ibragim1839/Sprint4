@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>REGISTRATION</title>
+    <link href="styles.css" rel="stylesheet" type="text/css">
+</head>
+<body onload="qwerty()">
+
+
+    <div class="mainDiv" id="RegistrationContainer">
+
+        <div class="info" id="nameInfoContainer">
+            <label for="nameInfo">Your name</label>
+            <input type="text" id="nameInfo" tabindex="1" onfocus="next()">
+            <p id="nameWarning" class="warning"></p>
+        </div>
+
+        <div class="info" id="loginInfoContainer">
+            <label for="loginInfo">Your login</label>
+            <input type="text" id="loginInfo" tabindex="2" onfocus="next()">
+            <p id="loginWarning" class="warning" ></p>
+        </div>
+
+        <div class="info" id="passwordInfoContainer">
+            <label for="passwordInfo">Your password</label>
+            <input type="password" id="passwordInfo" tabindex="3" onfocus="next()">
+            <p id="passwordWarning" class="warning"></p>
+        </div>
+
+        <div class="buttons" id="buttonsContainer">
+            <button onclick="checking()">Register</button>
+            <button><a href="Sprint5.html">Go to login</a></button>
+        </div>
+
+        <div class="warning" id="warningMessage" style="text-align: center; visibility: hidden">
+            <p>USER WITH SUCH LOGIN AND PASSWORD ALREADY EXISTS!</p>
+        </div>
+
+    </div>
+
+    <script>
+        let users=[]
+
+        function registration(){
+            console.log("sex")
+            let newUser = {};
+            newUser.name = nameInfo.value;
+            newUser.login = loginInfo.value;
+            newUser.password = passwordInfo.value;
+            users.push(newUser)
+            jUsers =JSON.stringify(users);
+            localStorage.setItem('users',jUsers)
+            alert("Вы успешно зарегестрированны")
+            window.location.href = 'Sprint5.html'
+        }
+
+        function isIn(){
+            if (localStorage.getItem('users') != null){
+                let isInArray = false;
+                let us = JSON.parse(localStorage.getItem('users'))
+                for(let i = 0; i < us.length; i++){
+                    if(us[i].login === loginInfo.value && us[i].password === passwordInfo.value){
+                        isInArray = true;
+                    }
+                }
+                if(isInArray === false){
+                    registration();
+                    nameInfo.value = '';
+                    loginInfo.value = '';
+                    passwordInfo.value = '';
+                }
+                else{
+                    warningMessage.style.visibility = "visible";
+                    nameInfo.value = '';
+                    loginInfo.value = '';
+                    passwordInfo.value = '';
+                }
+            }
+
+            else{
+                registration();
+            }
+        }
+
+        function qwerty(){
+            if (localStorage.getItem('users') != null){
+                users = JSON.parse(localStorage.getItem('users'))
+            }
+        }
+
+        function checking(){
+            if (nameInfo.value !== "" && loginInfo.value !== "" && passwordInfo.value !== ""){
+                isIn();
+            }
+            else{
+                if(nameInfo.value === "" ){
+                    nameWarning.innerHTML = "Please enter your name"
+                }
+                if(passwordInfo.value === "" ){
+                    passwordWarning.innerHTML = "Please enter your password"
+                }
+                if(loginInfo.value === "" ){
+                    loginWarning.innerHTML = "Please enter your login"
+                }
+            }
+        }
+
+
+        function next(){
+            event.target.nextElementSibling.innerHTML = "";
+            warningMessage.style.visibility = "hidden"
+        }
+
+    </script>
+
+
+</body>
+
+</html>
